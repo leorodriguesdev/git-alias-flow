@@ -8,6 +8,34 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const aliasesFile = path.join(__dirname, "../aliases/aliases.yml");
 
+// Verifica se é pedido help
+if (process.argv.includes("--help") || process.argv.includes("-h")) {
+  console.log(`
+git-alias-flow - Instalador automático de aliases Git
+
+USO:
+  git-alias-flow              Instala todos os aliases Git configurados
+  git-alias-flow --help, -h    Mostra esta mensagem de ajuda
+
+DESCRIÇÃO:
+  Instala automaticamente todos os aliases Git definidos no arquivo
+  aliases/aliases.yml usando git config --global.
+
+  Após a instalação, você pode usar o alias 'gh' para ver a lista
+  de todos os aliases disponíveis:
+  
+    git gh
+
+EXEMPLOS:
+  git-alias-flow               Instala os aliases
+  git gh                       Mostra ajuda dos aliases Git instalados
+
+Para mais informações, visite:
+  https://www.npmjs.com/package/git-alias-flow
+`);
+  process.exit(0);
+}
+
 if (!fs.existsSync(aliasesFile)) {
   console.error("Arquivo de aliases não encontrado.");
   process.exit(1);
