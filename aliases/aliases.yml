@@ -41,11 +41,6 @@ gcp: cherry-pick
 # Diff
 gdv: diff -w
 
-# Git SVN
-gsr: svn rebase
-gsd: svn dcommit
-git-svn-dcommit-push: "!git svn dcommit && git push github master:svntrunk"
-
 # Pull/Push da branch atual (compatível com Windows)
 ggpull: "!sh -c 'git pull origin $(git symbolic-ref --short HEAD)' -"
 ggpush: "!sh -c 'git push origin $(git symbolic-ref --short HEAD)' -"

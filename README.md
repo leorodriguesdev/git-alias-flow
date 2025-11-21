@@ -85,10 +85,6 @@ Após editar o arquivo, você pode reinstalar os aliases executando `git-alias-f
 ### Diff
 - `gdv` - git diff -w | view
 
-### Git SVN
-- `gsr` - git svn rebase
-- `gsd` - git svn dcommit
-- `git-svn-dcommit-push` - git svn dcommit && git push github master:svntrunk
 
 ## Desinstalação
 
