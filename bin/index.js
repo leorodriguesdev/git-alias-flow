@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { execSync } from "node:child_process";
+import { execSync, spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "url";
@@ -33,14 +33,28 @@ for (const line of lines) {
   }
 
   const alias = trimmedLine.substring(0, colonIndex).trim();
-  const command = trimmedLine.substring(colonIndex + 2).trim();
+  let command = trimmedLine.substring(colonIndex + 2).trim();
 
   if (!alias || !command) {
     continue;
   }
 
+  // Remove aspas do início e fim se existirem
+  if ((command.startsWith('"') && command.endsWith('"')) || 
+      (command.startsWith("'") && command.endsWith("'"))) {
+    command = command.slice(1, -1);
+  }
+
   try {
-    execSync(`git config --global alias.${alias} "${command}"`, { stdio: "pipe" });
+    // Usa spawnSync para evitar problemas com escape de shell
+    const result = spawnSync("git", ["config", "--global", `alias.${alias}`, command], {
+      stdio: "pipe"
+    });
+    
+    if (result.error || result.status !== 0) {
+      throw new Error(result.stderr?.toString() || "Erro desconhecido");
+    }
+    
     console.log(`Alias '${alias}' instalado`);
     successCount++;
   } catch (e) {
