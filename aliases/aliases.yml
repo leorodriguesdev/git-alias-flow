@@ -1,0 +1,52 @@
+# Git Aliases - Produtividade
+# Formato: alias: comando
+
+# Status
+gst: status
+gss: status -s
+
+# Pull/Push
+gl: pull
+gp: push
+gup: "!git fetch && git rebase"
+
+# Commit
+gc: commit -v
+gca: commit -v -a
+
+# Checkout
+gco: checkout
+gcm: checkout master
+
+# Branch
+gb: branch
+gba: branch -a
+
+# Log
+glg: log --stat --max-count=5
+glgg: log --graph --max-count=5
+gcount: shortlog -sn
+
+# Add/Merge
+ga: add
+gm: merge
+
+# Reset
+grh: reset HEAD
+grhh: reset HEAD --hard
+
+# Cherry-pick
+gcp: cherry-pick
+
+# Diff
+gdv: diff -w
+
+# Git SVN
+gsr: svn rebase
+gsd: svn dcommit
+git-svn-dcommit-push: "!git svn dcommit && git push github master:svntrunk"
+
+# Pull/Push da branch atual (compatível com Windows)
+ggpull: "!sh -c 'git pull origin $(git symbolic-ref --short HEAD)' -"
+ggpush: "!sh -c 'git push origin $(git symbolic-ref --short HEAD)' -"
+ggpnp: "!sh -c 'git pull origin $(git symbolic-ref --short HEAD) && git push origin $(git symbolic-ref --short HEAD)' -"

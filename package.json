@@ -1,0 +1,29 @@
+{
+  "name": "git-alias-flow",
+  "version": "1.0.0",
+  "description": "Instalador automático de aliases Git para produtividade",
+  "type": "module",
+  "main": "bin/index.js",
+  "bin": {
+    "git-alias-flow": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "git",
+    "alias",
+    "cli",
+    "productivity",
+    "git-aliases"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
