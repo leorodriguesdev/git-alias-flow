@@ -1,46 +1,46 @@
 # git-alias-flow
 
-Instalador automático de aliases Git para aumentar sua produtividade no terminal.
+Automatic installer for Git aliases to boost your terminal productivity.
 
-## Instalação
+## Installation
 
 ```bash
 npm install -g git-alias-flow
 ```
 
-## Uso
+## Usage
 
-Após a instalação, execute:
+After installation, run:
 
 ```bash
 git-alias-flow
 ```
 
-O comando irá instalar automaticamente todos os aliases Git configurados no arquivo `aliases/aliases.yml` usando `git config --global`.
+The command will automatically install all Git aliases configured in the `aliases/aliases.yml` file using `git config --global`.
 
-## Como editar os aliases
+## How to edit aliases
 
-Os aliases estão definidos no arquivo `aliases/aliases.yml` no formato:
+Aliases are defined in the `aliases/aliases.yml` file in the format:
 
 ```
-alias: comando
+alias: command
 ```
 
-Para comandos simples, use apenas o comando:
+For simple commands, use just the command:
 
 ```
 st: status
 ```
 
-Para comandos compostos ou que precisam de shell, use `!` seguido do comando completo entre aspas:
+For compound commands or those that need shell, use `!` followed by the complete command in quotes:
 
 ```
 up: "!git fetch && git rebase"
 ```
 
-Após editar o arquivo, você pode reinstalar os aliases executando `git-alias-flow` novamente.
+After editing the file, you can reinstall the aliases by running `git-alias-flow` again.
 
-## Aliases incluídos
+## Included aliases
 
 ### Status
 
@@ -52,15 +52,15 @@ Após editar o arquivo, você pode reinstalar os aliases executando `git-alias-f
 - `pl` - git pull
 - `ps` - git push
 - `up` - git fetch && git rebase
-- `pl-bc` - git pull origin (branch atual)
-- `ps-bc` - git push origin (branch atual)
-- `pnp` - git pull origin (branch atual) && git push origin (branch atual)
+- `pl-bc` - git pull origin (current branch)
+- `ps-bc` - git push origin (current branch)
+- `pnp` - git pull origin (current branch) && git push origin (current branch)
 
 ### Commit
 
 - `c` - git commit -v
 - `ca` - git commit -v -a
-- `cm` - git commit -m "mensagem"
+- `cm` - git commit -m "message"
 
 ### Checkout
 
@@ -71,7 +71,7 @@ Após editar o arquivo, você pode reinstalar os aliases executando `git-alias-f
 
 - `bc` - git branch
 - `bca` - git branch -a
-- `bcm` - git branch -m (renomear branch)
+- `bcm` - git branch -m (rename branch)
 
 ### Log
 
@@ -100,36 +100,40 @@ Após editar o arquivo, você pode reinstalar os aliases executando `git-alias-f
 
 ### Help
 
-- `h` - lista todos os aliases instalados
+- `h` - lists all installed aliases
 
-## Exemplos de uso
+## Usage examples
 
 ```bash
 git st              # git status
-git cm "mensagem"   # git commit -m "mensagem"
+git cm "message"    # git commit -m "message"
 git ck main         # git checkout main
 git bc              # git branch
-git bcm nome-antigo nome-novo  # git branch -m nome-antigo nome-novo
+git bcm old-name new-name  # git branch -m old-name new-name
 git ad              # git add .
-git pl-bc           # git pull origin (branch atual)
-git ps-bc           # git push origin (branch atual)
-git h               # mostra ajuda com todos os aliases
+git pl-bc           # git pull origin (current branch)
+git ps-bc           # git push origin (current branch)
+git h               # shows help with all aliases
 ```
 
-## Desinstalação
+## Uninstallation
 
-Para remover um alias específico:
+To remove a specific alias:
 
 ```bash
-git config --global --unset alias.<nome-do-alias>
+git config --global --unset alias.<alias-name>
 ```
 
-Para listar todos os aliases instalados:
+To list all installed aliases:
 
 ```bash
 git config --global --get-regexp alias
 ```
 
-## Licença
+## Other languages
+
+- [Português (Brasil)](README.pt-BR.md)
+
+## License
 
 MIT

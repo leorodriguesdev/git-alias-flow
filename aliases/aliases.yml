@@ -47,5 +47,5 @@ cp: cherry-pick
 # Diff
 dv: diff -w
 
-# Help dos aliases (lista todos os aliases instalados)
-h: '!f() { echo; echo "=============================================="; echo "           G I T   H E L P - ALIASES        "; echo "=============================================="; echo; git config --global --get-regexp "^alias\." | while IFS=" " read -r key value; do alias_name=${key#alias.}; [ "$alias_name" != "h" ] && echo "  $alias_name -> git $value"; done; echo; echo "=============================================="; echo "      Use git h sempre que quiser ajuda!       "; echo "=============================================="; echo; }; f'
+# Help aliases (lists all installed aliases)
+h: '!f() { echo; echo "=============================================="; echo "           G I T   H E L P - ALIASES        "; echo "=============================================="; echo; git config --global --get-regexp "^alias\." | while IFS=" " read -r key value; do alias_name=${key#alias.}; [ "$alias_name" != "h" ] && echo "  $alias_name -> git $value"; done; echo; echo "=============================================="; echo "      Use git h whenever you need help!       "; echo "=============================================="; echo; }; f'

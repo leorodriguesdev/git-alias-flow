@@ -8,43 +8,43 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const aliasesFile = path.join(__dirname, "../aliases/aliases.yml");
 
-// Verifica se é pedido help
+// Check if help is requested
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
   console.log(`
-git-alias-flow - Instalador automático de aliases Git
+git-alias-flow - Automatic Git aliases installer
 
-USO:
-  git-alias-flow              Instala todos os aliases Git configurados
-  git-alias-flow --help, -h    Mostra esta mensagem de ajuda
+USAGE:
+  git-alias-flow              Installs all configured Git aliases
+  git-alias-flow --help, -h   Shows this help message
 
-DESCRIÇÃO:
-  Instala automaticamente todos os aliases Git definidos no arquivo
-  aliases/aliases.yml usando git config --global.
+DESCRIPTION:
+  Automatically installs all Git aliases defined in the
+  aliases/aliases.yml file using git config --global.
 
-  Após a instalação, você pode usar o alias 'gh' para ver a lista
-  de todos os aliases disponíveis:
+  After installation, you can use the 'h' alias to see the list
+  of all available aliases:
   
-    git gh
+    git h
 
-EXEMPLOS:
-  git-alias-flow               Instala os aliases
-  git gh                       Mostra ajuda dos aliases Git instalados
+EXAMPLES:
+  git-alias-flow               Installs aliases
+  git h                       Shows help for installed Git aliases
 
-Para mais informações, visite:
+For more information, visit:
   https://www.npmjs.com/package/git-alias-flow
 `);
   process.exit(0);
 }
 
 if (!fs.existsSync(aliasesFile)) {
-  console.error("Arquivo de aliases não encontrado.");
+  console.error("Aliases file not found.");
   process.exit(1);
 }
 
 const content = fs.readFileSync(aliasesFile, "utf-8");
 const lines = content.split("\n").filter(l => l.trim().length > 0 && !l.trim().startsWith("#"));
 
-console.log("Instalando aliases Git...");
+console.log("Installing Git aliases...");
 
 let successCount = 0;
 let errorCount = 0;
@@ -67,28 +67,28 @@ for (const line of lines) {
     continue;
   }
 
-  // Remove aspas do início e fim se existirem
+  // Remove quotes from start and end if they exist
   if ((command.startsWith('"') && command.endsWith('"')) || 
       (command.startsWith("'") && command.endsWith("'"))) {
     command = command.slice(1, -1);
   }
 
   try {
-    // Usa spawnSync para evitar problemas com escape de shell
+    // Use spawnSync to avoid shell escape issues
     const result = spawnSync("git", ["config", "--global", `alias.${alias}`, command], {
       stdio: "pipe"
     });
     
     if (result.error || result.status !== 0) {
-      throw new Error(result.stderr?.toString() || "Erro desconhecido");
+      throw new Error(result.stderr?.toString() || "Unknown error");
     }
     
-    console.log(`Alias '${alias}' instalado`);
+    console.log(`Alias '${alias}' installed`);
     successCount++;
   } catch (e) {
-    console.error(`Erro ao instalar '${alias}'`);
+    console.error(`Error installing '${alias}'`);
     errorCount++;
   }
 }
 
-console.log(`\nPronto! ${successCount} aliases instalados${errorCount > 0 ? `, ${errorCount} falharam` : ""}.`);
+console.log(`\nDone! ${successCount} aliases installed${errorCount > 0 ? `, ${errorCount} failed` : ""}.`);
