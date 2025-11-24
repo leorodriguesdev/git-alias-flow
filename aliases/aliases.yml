@@ -2,49 +2,50 @@
 # Formato: alias: comando
 
 # Status
-gst: status
-gss: status -s
+st: status
+ss: status -s
 
 # Pull/Push
-gl: pull
-gp: push
-gup: "!git fetch && git rebase"
+pl: pull
+ps: push
+up: "!git fetch && git rebase"
+pl-bc: "!sh -c 'git pull origin $(git symbolic-ref --short HEAD)' -"
+ps-bc: "!sh -c 'git push origin $(git symbolic-ref --short HEAD)' -"
+pnp: "!sh -c 'git pull origin $(git symbolic-ref --short HEAD) && git push origin $(git symbolic-ref --short HEAD)' -"
 
 # Commit
-gc: commit -v
-gca: commit -v -a
+c: commit -v
+ca: commit -v -a
+cm: commit -m
 
 # Checkout
-gco: checkout
-gcm: checkout master
+ck: checkout
+ckm: checkout master
 
 # Branch
-gb: branch
-gba: branch -a
+bc: branch
+bca: branch -a
+bcm: branch -m
 
 # Log
-glg: log --stat --max-count=5
-glgg: log --graph --max-count=5
-gcount: shortlog -sn
+lg: log --stat --max-count=5
+lgg: log --graph --max-count=5
+count: shortlog -sn
 
 # Add/Merge
-ga: add
-gm: merge
+a: add
+a.: add .
+m: merge
 
 # Reset
-grh: reset HEAD
-grhh: reset HEAD --hard
+rh: reset HEAD
+rhh: reset HEAD --hard
 
 # Cherry-pick
-gcp: cherry-pick
+cp: cherry-pick
 
 # Diff
-gdv: diff -w
-
-# Pull/Push da branch atual (compatível com Windows)
-ggpull: "!sh -c 'git pull origin $(git symbolic-ref --short HEAD)' -"
-ggpush: "!sh -c 'git push origin $(git symbolic-ref --short HEAD)' -"
-ggpnp: "!sh -c 'git pull origin $(git symbolic-ref --short HEAD) && git push origin $(git symbolic-ref --short HEAD)' -"
+dv: diff -w
 
 # Help dos aliases (lista todos os aliases instalados)
-gh: '!f() { echo; echo "=============================================="; echo "           G I T   H E L P - ALIASES        "; echo "=============================================="; echo; git config --global --get-regexp "^alias\." | while IFS=" " read -r key value; do alias_name=${key#alias.}; [ "$alias_name" != "gh" ] && echo "  $alias_name -> git $value"; done; echo; echo "=============================================="; echo "      Use git gh sempre que quiser ajuda!       "; echo "=============================================="; echo; }; f'
+h: '!f() { echo; echo "=============================================="; echo "           G I T   H E L P - ALIASES        "; echo "=============================================="; echo; git config --global --get-regexp "^alias\." | while IFS=" " read -r key value; do alias_name=${key#alias.}; [ "$alias_name" != "h" ] && echo "  $alias_name -> git $value"; done; echo; echo "=============================================="; echo "      Use git h sempre que quiser ajuda!       "; echo "=============================================="; echo; }; f'

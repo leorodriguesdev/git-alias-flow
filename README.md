@@ -29,13 +29,13 @@ alias: comando
 Para comandos simples, use apenas o comando:
 
 ```
-gst: status
+st: status
 ```
 
 Para comandos compostos ou que precisam de shell, use `!` seguido do comando completo entre aspas:
 
 ```
-gup: "!git fetch && git rebase"
+up: "!git fetch && git rebase"
 ```
 
 Após editar o arquivo, você pode reinstalar os aliases executando `git-alias-flow` novamente.
@@ -43,48 +43,78 @@ Após editar o arquivo, você pode reinstalar os aliases executando `git-alias-f
 ## Aliases incluídos
 
 ### Status
-- `gst` - git status
-- `gss` - git status -s
+
+- `st` - git status
+- `ss` - git status -s
 
 ### Pull/Push
-- `gl` - git pull
-- `gp` - git push
-- `gup` - git fetch && git rebase
-- `ggpull` - git pull origin (branch atual)
-- `ggpush` - git push origin (branch atual)
-- `ggpnp` - git pull origin (branch atual) && git push origin (branch atual)
+
+- `pl` - git pull
+- `ps` - git push
+- `up` - git fetch && git rebase
+- `pl-bc` - git pull origin (branch atual)
+- `ps-bc` - git push origin (branch atual)
+- `pnp` - git pull origin (branch atual) && git push origin (branch atual)
 
 ### Commit
-- `gc` - git commit -v
-- `gca` - git commit -v -a
+
+- `c` - git commit -v
+- `ca` - git commit -v -a
+- `cm` - git commit -m "mensagem"
 
 ### Checkout
-- `gco` - git checkout
-- `gcm` - git checkout master
+
+- `ck` - git checkout
+- `ckm` - git checkout master
 
 ### Branch
-- `gb` - git branch
-- `gba` - git branch -a
+
+- `bc` - git branch
+- `bca` - git branch -a
+- `bcm` - git branch -m (renomear branch)
 
 ### Log
-- `glg` - git log --stat --max-count=5
-- `glgg` - git log --graph --max-count=5
-- `gcount` - git shortlog -sn
+
+- `lg` - git log --stat --max-count=5
+- `lgg` - git log --graph --max-count=5
+- `count` - git shortlog -sn
 
 ### Add/Merge
-- `ga` - git add
-- `gm` - git merge
+
+- `a` - git add
+- `a.` - git add .
+- `m` - git merge
 
 ### Reset
-- `grh` - git reset HEAD
-- `grhh` - git reset HEAD --hard
+
+- `rh` - git reset HEAD
+- `rhh` - git reset HEAD --hard
 
 ### Cherry-pick
-- `gcp` - git cherry-pick
+
+- `cp` - git cherry-pick
 
 ### Diff
-- `gdv` - git diff -w | view
 
+- `dv` - git diff -w
+
+### Help
+
+- `h` - lista todos os aliases instalados
+
+## Exemplos de uso
+
+```bash
+git st              # git status
+git cm "mensagem"   # git commit -m "mensagem"
+git ck main         # git checkout main
+git bc              # git branch
+git bcm nome-antigo nome-novo  # git branch -m nome-antigo nome-novo
+git a.              # git add .
+git pl-bc           # git pull origin (branch atual)
+git ps-bc           # git push origin (branch atual)
+git h               # mostra ajuda com todos os aliases
+```
 
 ## Desinstalação
 
