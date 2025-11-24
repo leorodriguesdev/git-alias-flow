@@ -7,6 +7,16 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const aliasesFile = path.join(__dirname, "../aliases/aliases.yml");
+const packageFile = path.join(__dirname, "../package.json");
+
+// Get version from package.json
+let version = "unknown";
+try {
+  const packageJson = JSON.parse(fs.readFileSync(packageFile, "utf-8"));
+  version = packageJson.version || "unknown";
+} catch (e) {
+  // Version will remain "unknown"
+}
 
 // Check if help is requested
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
@@ -51,7 +61,7 @@ if (process.argv[2] === "h") {
 
   console.log();
   console.log("==============================================");
-  console.log("           G I T   H E L P - ALIASES        ");
+  console.log(`      git-alias-flow v${version} - ALIASES      `);
   console.log("==============================================");
   console.log();
 
@@ -91,15 +101,9 @@ if (process.argv[2] === "h") {
       displayCommand = `git ${displayCommand}`;
     } else {
       let cleanCommand = displayCommand.replace(/^!\s*/, "");
-      const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
-      if (gitMatches && gitMatches.length > 0) {
-        const firstGitCmd = gitMatches[0]
-          .replace(/^git\s+/, "")
-          .split(/\s+/)
-          .slice(0, 3)
-          .join(" ");
-        displayCommand = `git ${firstGitCmd}`;
-      } else if (
+      
+      // Check specific patterns first (before generic gitMatches)
+      if (
         cleanCommand.includes("fetch") &&
         cleanCommand.includes("rebase")
       ) {
@@ -115,7 +119,18 @@ if (process.argv[2] === "h") {
       } else if (cleanCommand.includes("push origin")) {
         displayCommand = "git push origin (current branch)";
       } else {
-        displayCommand = "git <command>";
+        // Fallback to generic git command extraction
+        const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
+        if (gitMatches && gitMatches.length > 0) {
+          const firstGitCmd = gitMatches[0]
+            .replace(/^git\s+/, "")
+            .split(/\s+/)
+            .slice(0, 3)
+            .join(" ");
+          displayCommand = `git ${firstGitCmd}`;
+        } else {
+          displayCommand = "git <command>";
+        }
       }
     }
 
@@ -141,6 +156,7 @@ const lines = content
   .split("\n")
   .filter((l) => l.trim().length > 0 && !l.trim().startsWith("#"));
 
+console.log(`git-alias-flow v${version}`);
 console.log("Installing Git aliases...");
 
 let successCount = 0;
@@ -198,17 +214,8 @@ for (const line of lines) {
     // Remove the ! prefix
     let cleanCommand = displayCommand.replace(/^!\s*/, "");
 
-    // Extract git commands
-    const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
-    if (gitMatches && gitMatches.length > 0) {
-      // Use the first git command found
-      const firstGitCmd = gitMatches[0]
-        .replace(/^git\s+/, "")
-        .split(/\s+/)
-        .slice(0, 3)
-        .join(" ");
-      displayCommand = `git ${firstGitCmd}`;
-    } else if (
+    // Check specific patterns first (before generic gitMatches)
+    if (
       cleanCommand.includes("fetch") &&
       cleanCommand.includes("rebase")
     ) {
@@ -224,7 +231,19 @@ for (const line of lines) {
     } else if (cleanCommand.includes("push origin")) {
       displayCommand = "git push origin (current branch)";
     } else {
-      displayCommand = "git <command>";
+      // Fallback to generic git command extraction
+      const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
+      if (gitMatches && gitMatches.length > 0) {
+        // Use the first git command found
+        const firstGitCmd = gitMatches[0]
+          .replace(/^git\s+/, "")
+          .split(/\s+/)
+          .slice(0, 3)
+          .join(" ");
+        displayCommand = `git ${firstGitCmd}`;
+      } else {
+        displayCommand = "git <command>";
+      }
     }
   }
 
