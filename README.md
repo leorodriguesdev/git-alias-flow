@@ -82,7 +82,7 @@ Após editar o arquivo, você pode reinstalar os aliases executando `git-alias-f
 ### Add/Merge
 
 - `a` - git add
-- `a.` - git add .
+- `ad` - git add .
 - `m` - git merge
 
 ### Reset
@@ -110,7 +110,7 @@ git cm "mensagem"   # git commit -m "mensagem"
 git ck main         # git checkout main
 git bc              # git branch
 git bcm nome-antigo nome-novo  # git branch -m nome-antigo nome-novo
-git a.              # git add .
+git ad              # git add .
 git pl-bc           # git pull origin (branch atual)
 git ps-bc           # git push origin (branch atual)
 git h               # mostra ajuda com todos os aliases

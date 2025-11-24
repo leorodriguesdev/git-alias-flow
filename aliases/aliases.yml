@@ -34,7 +34,7 @@ count: shortlog -sn
 
 # Add/Merge
 a: add
-a.: add .
+ad: add .
 m: merge
 
 # Reset
