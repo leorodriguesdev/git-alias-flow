@@ -11,11 +11,11 @@ const aliasesFile = path.join(__dirname, "../aliases/aliases.yml");
 // Check if help is requested
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
   console.log(`
-git-alias-flow - Automatic Git aliases installer
+gaf - Automatic Git aliases installer
 
 USAGE:
-  git-alias-flow              Installs all configured Git aliases
-  git-alias-flow --help, -h   Shows this help message
+  gaf                    Installs all configured Git aliases
+  gaf --help, -h         Shows this help message
 
 DESCRIPTION:
   Automatically installs all Git aliases defined in the
@@ -24,11 +24,11 @@ DESCRIPTION:
   After installation, you can use the 'h' alias to see the list
   of all available aliases:
   
-    git h
+    gaf h
 
 EXAMPLES:
-  git-alias-flow               Installs aliases
-  git h                       Shows help for installed Git aliases
+  gaf                    Installs aliases
+  gaf h                  Shows help for installed Git aliases
 
 For more information, visit:
   https://www.npmjs.com/package/git-alias-flow
