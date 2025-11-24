@@ -1,11 +1,11 @@
 {
   "name": "git-alias-flow",
-  "version": "2.1.0",
+  "version": "2.3.0",
   "description": "Automatic Git aliases installer for productivity",
   "type": "module",
   "main": "bin/index.js",
   "bin": {
-    "git-alias-flow": "./bin/index.js"
+    "gaf": "./bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -13,7 +13,7 @@ npm install -g git-alias-flow
 After installation, run:
 
 ```bash
-git-alias-flow
+gaf
 ```
 
 The command will automatically install all Git aliases configured in the `aliases/aliases.yml` file using `git config --global`.
@@ -38,7 +38,7 @@ For compound commands or those that need shell, use `!` followed by the complete
 up: "!git fetch && git rebase"
 ```
 
-After editing the file, you can reinstall the aliases by running `git-alias-flow` again.
+After editing the file, you can reinstall the aliases by running `gaf` again.
 
 ## Included aliases
 
@@ -113,7 +113,7 @@ git bcm old-name new-name  # git branch -m old-name new-name
 git ad              # git add .
 git pl-bc           # git pull origin (current branch)
 git ps-bc           # git push origin (current branch)
-git h               # shows help with all aliases
+gaf h               # shows help with all aliases
 ```
 
 ## Uninstallation
