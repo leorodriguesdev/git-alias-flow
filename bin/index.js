@@ -104,17 +104,16 @@ if (process.argv[2] === "h") {
         cleanCommand.includes("rebase")
       ) {
         displayCommand = "git fetch && git rebase";
+      } else if (
+        cleanCommand.includes("pull origin") &&
+        cleanCommand.includes("push origin")
+      ) {
+        displayCommand =
+          "git pull origin (current branch) && git push origin (current branch)";
       } else if (cleanCommand.includes("pull origin")) {
         displayCommand = "git pull origin (current branch)";
       } else if (cleanCommand.includes("push origin")) {
         displayCommand = "git push origin (current branch)";
-      } else if (
-        cleanCommand.includes(
-          "git pull origin $(git symbolic-ref --short HEAD) && git push origin $(git symbolic-ref --short HEAD)' -"
-        )
-      ) {
-        displayCommand =
-          "git pull origin (current branch) && git push origin (current branch)";
       } else {
         displayCommand = "git <command>";
       }
@@ -214,6 +213,12 @@ for (const line of lines) {
       cleanCommand.includes("rebase")
     ) {
       displayCommand = "git fetch && git rebase";
+    } else if (
+      cleanCommand.includes("pull origin") &&
+      cleanCommand.includes("push origin")
+    ) {
+      displayCommand =
+        "git pull origin (current branch) && git push origin (current branch)";
     } else if (cleanCommand.includes("pull origin")) {
       displayCommand = "git pull origin (current branch)";
     } else if (cleanCommand.includes("push origin")) {
