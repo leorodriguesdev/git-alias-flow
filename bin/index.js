@@ -45,7 +45,9 @@ if (process.argv[2] === "h") {
   }
 
   const content = fs.readFileSync(aliasesFile, "utf-8");
-  const lines = content.split("\n").filter(l => l.trim().length > 0 && !l.trim().startsWith("#"));
+  const lines = content
+    .split("\n")
+    .filter((l) => l.trim().length > 0 && !l.trim().startsWith("#"));
 
   console.log();
   console.log("==============================================");
@@ -91,14 +93,24 @@ if (process.argv[2] === "h") {
       let cleanCommand = displayCommand.replace(/^!\s*/, "");
       const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
       if (gitMatches && gitMatches.length > 0) {
-        const firstGitCmd = gitMatches[0].replace(/^git\s+/, "").split(/\s+/).slice(0, 3).join(" ");
+        const firstGitCmd = gitMatches[0]
+          .replace(/^git\s+/, "")
+          .split(/\s+/)
+          .slice(0, 3)
+          .join(" ");
         displayCommand = `git ${firstGitCmd}`;
-      } else if (cleanCommand.includes("fetch") && cleanCommand.includes("rebase")) {
+      } else if (
+        cleanCommand.includes("fetch") &&
+        cleanCommand.includes("rebase")
+      ) {
         displayCommand = "git fetch && git rebase";
       } else if (cleanCommand.includes("pull origin")) {
         displayCommand = "git pull origin (current branch)";
       } else if (cleanCommand.includes("push origin")) {
         displayCommand = "git push origin (current branch)";
+      } else if (cleanCommand.includes("&& git push origin")) {
+        displayCommand =
+          "git pull origin (current branch) && git push origin (current branch)";
       } else {
         displayCommand = "git <command>";
       }
