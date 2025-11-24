@@ -42,7 +42,9 @@ if (!fs.existsSync(aliasesFile)) {
 }
 
 const content = fs.readFileSync(aliasesFile, "utf-8");
-const lines = content.split("\n").filter(l => l.trim().length > 0 && !l.trim().startsWith("#"));
+const lines = content
+  .split("\n")
+  .filter((l) => l.trim().length > 0 && !l.trim().startsWith("#"));
 
 console.log("Installing Git aliases...");
 
@@ -67,23 +69,49 @@ for (const line of lines) {
     continue;
   }
 
+  // Store original command for display
+  const originalCommand = command;
+
   // Remove quotes from start and end if they exist
-  if ((command.startsWith('"') && command.endsWith('"')) || 
-      (command.startsWith("'") && command.endsWith("'"))) {
+  if (
+    (command.startsWith('"') && command.endsWith('"')) ||
+    (command.startsWith("'") && command.endsWith("'"))
+  ) {
     command = command.slice(1, -1);
+  }
+
+  // Format command for display
+  let displayCommand = originalCommand;
+  if (!displayCommand.startsWith("!")) {
+    // Simple git command - add "git " prefix
+    displayCommand = `git ${displayCommand}`;
+  } else {
+    // Shell command - extract the main git command
+    const gitMatch = displayCommand.match(/git\s+(\w+)(?:\s+[^&|;`$]+)?/);
+    if (gitMatch) {
+      const gitCmd = gitMatch[0].replace(/git\s+/, "").split(/\s+/).slice(0, 4).join(" ");
+      displayCommand = `git ${gitCmd}`;
+    } else {
+      // Fallback for complex commands
+      displayCommand = "git <command>";
+    }
   }
 
   try {
     // Use spawnSync to avoid shell escape issues
-    const result = spawnSync("git", ["config", "--global", `alias.${alias}`, command], {
-      stdio: "pipe"
-    });
-    
+    const result = spawnSync(
+      "git",
+      ["config", "--global", `alias.${alias}`, command],
+      {
+        stdio: "pipe",
+      }
+    );
+
     if (result.error || result.status !== 0) {
       throw new Error(result.stderr?.toString() || "Unknown error");
     }
-    
-    console.log(`Alias '${alias}' installed`);
+
+    console.log(`Alias '${alias}' as '${displayCommand}' installed`);
     successCount++;
   } catch (e) {
     console.error(`Error installing '${alias}'`);
@@ -91,4 +119,9 @@ for (const line of lines) {
   }
 }
 
-console.log(`\nDone! ${successCount} aliases installed${errorCount > 0 ? `, ${errorCount} failed` : ""}.`);
+console.log(
+  `\nDone! ${successCount} aliases installed${
+    errorCount > 0 ? `, ${errorCount} failed` : ""
+  }.`
+);
+console.log(`For help use 'gaf h'`);
