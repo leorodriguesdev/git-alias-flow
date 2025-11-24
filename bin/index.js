@@ -80,6 +80,9 @@ for (const line of lines) {
     command = command.slice(1, -1);
   }
 
+  // Skip alias 'h' from installation log (it's the help command)
+  const shouldShowInLog = alias !== "h";
+
   // Format command for display
   let displayCommand = originalCommand;
   if (!displayCommand.startsWith("!")) {
@@ -87,12 +90,22 @@ for (const line of lines) {
     displayCommand = `git ${displayCommand}`;
   } else {
     // Shell command - extract the main git command
-    const gitMatch = displayCommand.match(/git\s+(\w+)(?:\s+[^&|;`$]+)?/);
-    if (gitMatch) {
-      const gitCmd = gitMatch[0].replace(/git\s+/, "").split(/\s+/).slice(0, 4).join(" ");
-      displayCommand = `git ${gitCmd}`;
+    // Remove quotes first
+    let cleanCommand = displayCommand.replace(/^["']|["']$/g, "");
+    
+    // Extract git commands
+    const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
+    if (gitMatches && gitMatches.length > 0) {
+      // Use the first git command found
+      const firstGitCmd = gitMatches[0].replace(/^git\s+/, "").split(/\s+/).slice(0, 3).join(" ");
+      displayCommand = `git ${firstGitCmd}`;
+    } else if (cleanCommand.includes("fetch") && cleanCommand.includes("rebase")) {
+      displayCommand = "git fetch && git rebase";
+    } else if (cleanCommand.includes("pull origin")) {
+      displayCommand = "git pull origin (current branch)";
+    } else if (cleanCommand.includes("push origin")) {
+      displayCommand = "git push origin (current branch)";
     } else {
-      // Fallback for complex commands
       displayCommand = "git <command>";
     }
   }
@@ -111,7 +124,11 @@ for (const line of lines) {
       throw new Error(result.stderr?.toString() || "Unknown error");
     }
 
-    console.log(`Alias '${alias}' as '${displayCommand}' installed`);
+    if (shouldShowInLog) {
+      console.log(`Alias '${alias}' as '${displayCommand}' installed`);
+    } else {
+      console.log(`Alias '${alias}' installed`);
+    }
     successCount++;
   } catch (e) {
     console.error(`Error installing '${alias}'`);
