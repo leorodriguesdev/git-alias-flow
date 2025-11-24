@@ -39,10 +39,81 @@ For more information, visit:
 
 // Check if user wants to show Git aliases help
 if (process.argv[2] === "h") {
-  const result = spawnSync("git", ["h"], {
-    stdio: "inherit",
-  });
-  process.exit(result.status || 0);
+  if (!fs.existsSync(aliasesFile)) {
+    console.error("Aliases file not found.");
+    process.exit(1);
+  }
+
+  const content = fs.readFileSync(aliasesFile, "utf-8");
+  const lines = content.split("\n").filter(l => l.trim().length > 0 && !l.trim().startsWith("#"));
+
+  console.log();
+  console.log("==============================================");
+  console.log("           G I T   H E L P - ALIASES        ");
+  console.log("==============================================");
+  console.log();
+
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    if (!trimmedLine || trimmedLine.startsWith("#")) {
+      continue;
+    }
+
+    const colonIndex = trimmedLine.indexOf(": ");
+    if (colonIndex === -1) {
+      continue;
+    }
+
+    const alias = trimmedLine.substring(0, colonIndex).trim();
+    let command = trimmedLine.substring(colonIndex + 2).trim();
+
+    if (!alias || !command) {
+      continue;
+    }
+
+    // Skip alias 'h' from the list
+    if (alias === "h") {
+      continue;
+    }
+
+    // Format command for display
+    let displayCommand = command;
+    if (
+      (displayCommand.startsWith('"') && displayCommand.endsWith('"')) ||
+      (displayCommand.startsWith("'") && displayCommand.endsWith("'"))
+    ) {
+      displayCommand = displayCommand.slice(1, -1);
+    }
+
+    if (!displayCommand.startsWith("!")) {
+      displayCommand = `git ${displayCommand}`;
+    } else {
+      let cleanCommand = displayCommand.replace(/^!\s*/, "");
+      const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
+      if (gitMatches && gitMatches.length > 0) {
+        const firstGitCmd = gitMatches[0].replace(/^git\s+/, "").split(/\s+/).slice(0, 3).join(" ");
+        displayCommand = `git ${firstGitCmd}`;
+      } else if (cleanCommand.includes("fetch") && cleanCommand.includes("rebase")) {
+        displayCommand = "git fetch && git rebase";
+      } else if (cleanCommand.includes("pull origin")) {
+        displayCommand = "git pull origin (current branch)";
+      } else if (cleanCommand.includes("push origin")) {
+        displayCommand = "git push origin (current branch)";
+      } else {
+        displayCommand = "git <command>";
+      }
+    }
+
+    console.log(`  ${alias.padEnd(12)} -> ${displayCommand}`);
+  }
+
+  console.log();
+  console.log("==============================================");
+  console.log("      Use gaf h whenever you need help!       ");
+  console.log("==============================================");
+  console.log();
+
+  process.exit(0);
 }
 
 if (!fs.existsSync(aliasesFile)) {
@@ -95,7 +166,7 @@ for (const line of lines) {
 
   // Format command for display
   let displayCommand = originalCommand;
-  
+
   // Remove quotes for processing display
   if (
     (displayCommand.startsWith('"') && displayCommand.endsWith('"')) ||
