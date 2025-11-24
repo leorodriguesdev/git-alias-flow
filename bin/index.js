@@ -101,12 +101,9 @@ if (process.argv[2] === "h") {
       displayCommand = `git ${displayCommand}`;
     } else {
       let cleanCommand = displayCommand.replace(/^!\s*/, "");
-      
+
       // Check specific patterns first (before generic gitMatches)
-      if (
-        cleanCommand.includes("fetch") &&
-        cleanCommand.includes("rebase")
-      ) {
+      if (cleanCommand.includes("fetch") && cleanCommand.includes("rebase")) {
         displayCommand = "git fetch && git rebase";
       } else if (
         cleanCommand.includes("pull origin") &&
@@ -120,7 +117,9 @@ if (process.argv[2] === "h") {
         displayCommand = "git push origin (current branch)";
       } else {
         // Fallback to generic git command extraction
-        const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
+        const gitMatches = cleanCommand.match(
+          /git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi
+        );
         if (gitMatches && gitMatches.length > 0) {
           const firstGitCmd = gitMatches[0]
             .replace(/^git\s+/, "")
@@ -215,10 +214,7 @@ for (const line of lines) {
     let cleanCommand = displayCommand.replace(/^!\s*/, "");
 
     // Check specific patterns first (before generic gitMatches)
-    if (
-      cleanCommand.includes("fetch") &&
-      cleanCommand.includes("rebase")
-    ) {
+    if (cleanCommand.includes("fetch") && cleanCommand.includes("rebase")) {
       displayCommand = "git fetch && git rebase";
     } else if (
       cleanCommand.includes("pull origin") &&
