@@ -1,7 +1,7 @@
 {
   "name": "git-alias-flow",
   "version": "2.4.1",
-  "description": "Automatic Git aliases installer for productivity",
+  "description": "Automatic Git aliases installer for productivity. Install 27+ productivity Git aliases with a single command.",
   "type": "module",
   "main": "bin/index.js",
   "bin": {
@@ -13,16 +13,26 @@
   "keywords": [
     "git",
     "alias",
+    "aliases",
     "cli",
     "productivity",
-    "git-aliases"
+    "git-aliases",
+    "git-commands",
+    "terminal",
+    "developer-tools",
+    "workflow",
+    "automation"
   ],
   "author": "",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/leorodriguesdev/git-alias-flow.git"
   },
+  "bugs": {
+    "url": "https://github.com/leorodriguesdev/git-alias-flow/issues"
+  },
+  "homepage": "https://github.com/leorodriguesdev/git-alias-flow#readme",
   "engines": {
     "node": ">=14.0.0"
   }
