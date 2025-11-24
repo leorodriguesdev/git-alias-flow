@@ -16,6 +16,7 @@ gaf - Automatic Git aliases installer
 USAGE:
   gaf                    Installs all configured Git aliases
   gaf --help, -h         Shows this help message
+  gaf h                  Shows help for installed Git aliases
 
 DESCRIPTION:
   Automatically installs all Git aliases defined in the
@@ -34,6 +35,14 @@ For more information, visit:
   https://www.npmjs.com/package/git-alias-flow
 `);
   process.exit(0);
+}
+
+// Check if user wants to show Git aliases help
+if (process.argv[2] === "h") {
+  const result = spawnSync("git", ["h"], {
+    stdio: "inherit",
+  });
+  process.exit(result.status || 0);
 }
 
 if (!fs.existsSync(aliasesFile)) {
@@ -69,15 +78,16 @@ for (const line of lines) {
     continue;
   }
 
-  // Store original command for display
+  // Store original command for display (before removing quotes)
   const originalCommand = command;
 
-  // Remove quotes from start and end if they exist
+  // Remove quotes from start and end if they exist (for installation)
+  let cleanCommandForInstall = command;
   if (
     (command.startsWith('"') && command.endsWith('"')) ||
     (command.startsWith("'") && command.endsWith("'"))
   ) {
-    command = command.slice(1, -1);
+    cleanCommandForInstall = command.slice(1, -1);
   }
 
   // Skip alias 'h' from installation log (it's the help command)
@@ -85,21 +95,37 @@ for (const line of lines) {
 
   // Format command for display
   let displayCommand = originalCommand;
+  
+  // Remove quotes for processing display
+  if (
+    (displayCommand.startsWith('"') && displayCommand.endsWith('"')) ||
+    (displayCommand.startsWith("'") && displayCommand.endsWith("'"))
+  ) {
+    displayCommand = displayCommand.slice(1, -1);
+  }
+
   if (!displayCommand.startsWith("!")) {
     // Simple git command - add "git " prefix
     displayCommand = `git ${displayCommand}`;
   } else {
     // Shell command - extract the main git command
-    // Remove quotes first
-    let cleanCommand = displayCommand.replace(/^["']|["']$/g, "");
-    
+    // Remove the ! prefix
+    let cleanCommand = displayCommand.replace(/^!\s*/, "");
+
     // Extract git commands
     const gitMatches = cleanCommand.match(/git\s+([a-z-]+(?:\s+[a-z-]+)*)/gi);
     if (gitMatches && gitMatches.length > 0) {
       // Use the first git command found
-      const firstGitCmd = gitMatches[0].replace(/^git\s+/, "").split(/\s+/).slice(0, 3).join(" ");
+      const firstGitCmd = gitMatches[0]
+        .replace(/^git\s+/, "")
+        .split(/\s+/)
+        .slice(0, 3)
+        .join(" ");
       displayCommand = `git ${firstGitCmd}`;
-    } else if (cleanCommand.includes("fetch") && cleanCommand.includes("rebase")) {
+    } else if (
+      cleanCommand.includes("fetch") &&
+      cleanCommand.includes("rebase")
+    ) {
       displayCommand = "git fetch && git rebase";
     } else if (cleanCommand.includes("pull origin")) {
       displayCommand = "git pull origin (current branch)";
@@ -114,7 +140,7 @@ for (const line of lines) {
     // Use spawnSync to avoid shell escape issues
     const result = spawnSync(
       "git",
-      ["config", "--global", `alias.${alias}`, command],
+      ["config", "--global", `alias.${alias}`, cleanCommandForInstall],
       {
         stdio: "pipe",
       }
