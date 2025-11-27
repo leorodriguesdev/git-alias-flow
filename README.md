@@ -89,6 +89,7 @@ Tired of typing long Git commands? `git-alias-flow` provides a curated set of pr
 ### Checkout
 
 - `ck` - git checkout
+- `ckb` - git checkout -b
 - `ckm` - git checkout master
 
 ### Branch
@@ -139,6 +140,7 @@ git ca              # git commit -v -a
 
 # Branches
 git ck main         # git checkout main
+git ckb feature     # git checkout -b feature
 git bc              # git branch
 git bcm old new     # git branch -m old new
 

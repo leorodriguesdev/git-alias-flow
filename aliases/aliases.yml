@@ -20,6 +20,7 @@ cm: commit -m
 
 # Checkout
 ck: checkout
+ckb: checkout -b
 ckm: checkout master
 
 # Branch
