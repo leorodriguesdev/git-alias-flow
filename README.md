@@ -1,5 +1,7 @@
 # git-alias-flow
 
+![git-alias-flow] (https://github.com/leorodriguesdev/git-alias-flow/github/cover.png)
+
 [![npm version](https://img.shields.io/npm/v/git-alias-flow.svg)](https://www.npmjs.com/package/git-alias-flow)
 [![npm downloads](https://img.shields.io/npm/dm/git-alias-flow.svg)](https://www.npmjs.com/package/git-alias-flow)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
