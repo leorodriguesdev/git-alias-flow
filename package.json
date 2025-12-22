@@ -1,6 +1,6 @@
 {
   "name": "git-alias-flow",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "Automatic Git aliases installer for productivity. Install 27+ productivity Git aliases with a single command.",
   "type": "module",
   "main": "bin/index.js",
