@@ -8,6 +8,7 @@ ss: status -s
 # Pull/Push
 pl: pull
 ps: push
+f: fetch
 up: "!git fetch && git rebase"
 pl-bc: "!sh -c 'git pull origin $(git symbolic-ref --short HEAD)' -"
 ps-bc: "!sh -c 'git push origin $(git symbolic-ref --short HEAD)' -"

@@ -77,6 +77,7 @@ Tired of typing long Git commands? `git-alias-flow` provides a curated set of pr
 
 - `pl` - git pull
 - `ps` - git push
+- `f` - git fetch
 - `up` - git fetch && git rebase
 - `pl-bc` - git pull origin (current branch)
 - `ps-bc` - git push origin (current branch)
@@ -151,6 +152,7 @@ git ad              # git add .
 git a file.js       # git add file.js
 
 # Pull/Push
+git f               # git fetch
 git pl-bc           # git pull origin (current branch)
 git ps-bc           # git push origin (current branch)
 git pnp             # pull + push (current branch)
